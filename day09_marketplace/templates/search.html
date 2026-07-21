@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}搜索：{{ keyword }} - 校园二手交易平台{% endblock %}
+
+{% block content %}
+<div class="search-result">
+    <h2>搜索结果：{{ keyword }}</h2>
+    <p class="result-count">找到 {{ products|length }} 件商品</p>
+
+    <form method="GET" action="{{ url_for('search') }}" class="search-form-large">
+        <input type="text" name="keyword" value="{{ keyword }}" placeholder="搜索商品名称..." required>
+        <button type="submit">搜索</button>
+    </form>
+
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">
+                <div class="product-image">
+                    {% if product.image_path %}
+                    <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="no-image">暂无图片</div>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="product-category">{{ product.category }}</p>
+                    <p class="product-price">¥{{ "%.2f"|format(product.price) }}</p>
+                </div>
+            </a>
+        </div>
+        {% else %}
+        <div class="no-products">
+            <p>没有找到相关商品</p>
+            <p class="suggestion">试试其他关键词？</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="back-link">
+        <a href="{{ url_for('index') }}">← 返回首页</a>
+    </div>
+</div>
+{% endblock %}

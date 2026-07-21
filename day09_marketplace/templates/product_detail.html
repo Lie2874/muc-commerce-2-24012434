@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - 校园二手交易平台{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="product-image-large">
+        {% if product.image_path %}
+        <img src="{{ url_for('static', filename='uploads/' + product.image_path) }}" alt="{{ product.name }}">
+        {% else %}
+        <div class="no-image-large">暂无图片</div>
+        {% endif %}
+    </div>
+
+    <div class="product-info-large">
+        <h1>{{ product.name }}</h1>
+        <div class="product-meta">
+            <span class="category-tag">{{ product.category }}</span>
+            <span class="publish-time">发布于 {{ product.created_at }}</span>
+        </div>
+
+        <div class="price-large">
+            <span class="currency">¥</span>
+            <span class="amount">{{ "%.2f"|format(product.price) }}</span>
+        </div>
+
+        <div class="detail-section">
+            <h3>商品描述</h3>
+            <p>{{ product.description or '暂无描述' }}</p>
+        </div>
+
+        <div class="detail-section">
+            <h3>联系方式</h3>
+            <p class="contact-info">{{ product.contact }}</p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="{{ url_for('index') }}" class="btn-back">返回列表</a>
+            <button onclick="window.print()" class="btn-print">打印信息</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
